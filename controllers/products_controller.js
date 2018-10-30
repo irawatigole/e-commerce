@@ -13,9 +13,9 @@ router.get('/', (req, res) => {
 });
 
 //find by id
-router.get('/:id', validateID, (req, res) => {
+router.get('/:id', validateID, authenticateUser, (req, res) => {
     let id = req.params.id;
-    Product.findById(id).then((product) => {
+    Product.findById(id).populate('category', 'name').then((product) => {
         res.send(product);
     }).catch((err) => {
         res.send(err);

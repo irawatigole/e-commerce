@@ -3,6 +3,7 @@ const router = express.Router();
 const { Category } = require('../models/category');
 const { validateID } = require('../middlewares/utilities');
 const { Product } = require('../models/product');
+const { authenticateUser } = require('../middlewares/authentication');
 
 const { authenticateUser, authorizeUser } = require('../middlewares/authentication');
 
@@ -82,7 +83,7 @@ router.get('/:id/products', validateID, (req, res) => {
 
     // All the user defined methods are defined at schema level not at model level
     // Populate method is used to return only the required fields from a different object
-    Product.findByCategory(id).populate('category', 'name').then((products) => { 
+    Product.findByCategory(id).then((products) => { 
         res.send(products);
     }).catch((err) => {
         res.send(err);
