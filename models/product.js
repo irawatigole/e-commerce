@@ -51,6 +51,13 @@ productSchema.statics.findByCategory = function (id) { //dont use es6 function b
     return Product.find({ category: id });
 }
 
+productSchema.statics.findByCategoryAndRange = function (id) { 
+    let Product = this;     
+    return Product.find({ category: id });
+}
+
+
+
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = {

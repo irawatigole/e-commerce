@@ -2,6 +2,7 @@ const express = require('express');
 const { Product } = require('../models/product');
 const { validateID } = require('../middlewares/utilities');
 const router = express.Router();
+const {authenticateUser} = require('../middlewares/authentication');
 
 //index
 router.get('/', (req, res) => {
@@ -77,6 +78,27 @@ router.get('/:id/products', validateID, (req, res) => {
         res.send(err);
     });
 });
+
+
+//to find products between two values
+router.get('/price/value', (req, res) => {
+     if(req.query.low && req.query.high){
+        Product.where('price').gte(parseInt(req.query.high)).lte(parseInt(req.query.low)).then((products) => {
+            res.send(products)
+        })
+    }else if(req.query.low){
+        Product.where('price').lte(parseInt(req.query.low)).then((products) => {
+            res.send(products)
+        })
+    }else if(req.query.high){
+        Product.where('price').gte(parseInt(req.query.high)).then((products) => {
+            res.send(products)
+        })
+    }
+})
+
+
+
 
 module.exports = {
     productsController: router
